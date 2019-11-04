@@ -4,10 +4,24 @@ __pycache__/
 *$py.class
 
 # .vscode/
-*.code-workspace
+# *.code-workspace
 
 data/*/*
 
 lib/*
 figure/
 exp/
+
+
+*.pyc
+__pycache__/
+
+ckpt/
+vis/
+log/
+pretrained/
+
+*.tmp
+*.bak
+*tmp*
+*bak/
