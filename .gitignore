@@ -6,7 +6,7 @@ __pycache__/
 # .vscode/
 *.code-workspace
 
-data/*
+data/*/*
 
 lib/*
 figure/
