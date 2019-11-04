@@ -5,6 +5,7 @@ __pycache__/
 
 # .vscode/
 # *.code-workspace
+.nfs0000000001e8d8710000003a
 
 data/*/*
 
