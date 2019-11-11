@@ -17,7 +17,7 @@ result_dir=$exp_dir/results
 model_dir=$exp_dir/models
 
 set -e
-. env.sh && . parse_options.sh
+. env.sh && . utils/parse_options.sh
 echo -e "${GREEN}Expr at $exp_dir${BLANK}"
 
 # model configs(can not mix with --args)
