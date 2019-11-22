@@ -47,9 +47,9 @@ def visualize_result(data, pred, cfg):
     # aggregate images and save
     im_vis = np.concatenate((img, pred_color), axis=1)
 
-    img_name = info.split('/')[-1]
+    img_name = 'seg_' + info.split('/')[-1]
     Image.fromarray(im_vis).save(
-        os.path.join(cfg.TEST.result, img_name.replace('.jpg', '.png')))
+        os.path.join(cfg.TEST.result, img_name))
 
 
 def test(segmentation_module, loader, gpu):
@@ -163,6 +163,7 @@ if __name__ == '__main__':
         nargs=argparse.REMAINDER,
     )
     args = parser.parse_args()
+    print(args.imgs)
 
     cfg.merge_from_file(args.cfg)
     cfg.merge_from_list(args.opts)
@@ -185,8 +186,8 @@ if __name__ == '__main__':
         os.path.exists(cfg.MODEL.weights_decoder), "checkpoint does not exitst!"
 
     # generate testing image list
-    if os.path.isdir(args.imgs[0]):
-        imgs = find_recursive(args.imgs[0])
+    if os.path.isdir(args.imgs):
+        imgs = find_recursive(args.imgs)
     else:
         imgs = [args.imgs]
     assert len(imgs), "imgs should be a path to image (.jpg) or directory."

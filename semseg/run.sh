@@ -53,10 +53,10 @@ if [ $stage -le 1 ] && [ $end_stage -ge 1 ]; then
         ${args[*]}
 fi
 
-if [ $stage -le 2 ] && [ $end_stage -ge 2 ] && [ $test = true ]; then
+if [[ $stage -le 2 && $end_stage -ge 2 ]] || [ $test = true ]; then
     echo -e "${GREEN}Test File${BLANK}"
     python3 -u scripts/test.py --cfg $config \
-        --imgs $result_dir/ADE_val_00001519.jpg \
+        --imgs /mnt/lustre/sjtu/home/xg000/cv/munster_000005_000019_leftImg8bit.png \
         TEST.checkpoint epoch_20.pth \
         TEST.result $result_dir \
         ${args[@]}

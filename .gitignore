@@ -7,7 +7,7 @@ __pycache__/
 # *.code-workspace
 .nfs0000000001e8d8710000003a
 
-data/*/*
+data/*
 
 lib/*
 figure/
@@ -22,6 +22,8 @@ vis/
 log/
 pretrained/
 
+*.jpg
+*.png
 *.tmp
 *.bak
 *tmp*
