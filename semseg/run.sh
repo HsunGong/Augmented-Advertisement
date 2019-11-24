@@ -1,10 +1,12 @@
 #!/bin/bash
 
 stage=0 end_stage=-1
-
 dataset=ade20k
+
 encoder=resnet50dilated
 decoder=ppm_deepsup
+# http://sceneparsing.csail.mit.edu/model/pytorch/
+
 model=$dataset-$encoder-$decoder
 config=config/${model}.yaml
 
@@ -52,13 +54,13 @@ if [ $stage -le 1 ] && [ $end_stage -ge 1 ]; then
     python3 scripts/eval_multipro.py --cfg $config \
         ${args[*]}
 fi
-
+# munster_000005_000019_leftImg8bit
 if [[ $stage -le 2 && $end_stage -ge 2 ]] || [ $test = true ]; then
     echo -e "${GREEN}Test File${BLANK}"
     python3 -u scripts/test.py --cfg $config \
-        --imgs /mnt/lustre/sjtu/home/xg000/cv/munster_000005_000019_leftImg8bit.png \
+        --imgs ../demo/4.png \
         TEST.checkpoint epoch_20.pth \
-        TEST.result $result_dir \
+        TEST.result ../demo \
         ${args[@]}
 fi
 

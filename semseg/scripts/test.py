@@ -47,8 +47,9 @@ def visualize_result(data, pred, cfg):
     # aggregate images and save
     im_vis = np.concatenate((img, pred_color), axis=1)
 
-    img_name = 'seg_' + info.split('/')[-1]
-    Image.fromarray(im_vis).save(
+    # img_name = 'seg_' + info.split('/')[-1]
+    img_name = "sem_seg.png"
+    Image.fromarray(pred_color).save(
         os.path.join(cfg.TEST.result, img_name))
 
 
