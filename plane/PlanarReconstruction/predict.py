@@ -126,7 +126,10 @@ def predict(_run, _log):
 
         # cv2.imshow('image', image)
         # cv2.waitKey(0)
-        cv2.imwrite(os.path.dirname(cfg.image_path) + '/plane-recons.png', image)
+        cv2.imwrite(os.path.dirname(cfg.image_path) + '/seg-recons.png', pred_seg)
+        cv2.imwrite(os.path.dirname(cfg.image_path) + '/blend_pred-recons.png', blend_pred)
+        cv2.imwrite(os.path.dirname(cfg.image_path) + '/mask-recons.png', mask)
+        cv2.imwrite(os.path.dirname(cfg.image_path) + '/depth-recons.png', depth)
 
 
 if __name__ == '__main__':
