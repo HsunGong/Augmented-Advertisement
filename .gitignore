@@ -8,6 +8,7 @@ __pycache__/
 .nfs0000000001e8d8710000003a
 
 data/*
+demo/
 
 lib/*
 figure/
