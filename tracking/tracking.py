@@ -200,7 +200,7 @@ def tracking_video_rectangle(root, name, ad_name, point, edge = 20, save_img = F
         if k == 27 : break
     return np.array(ans)
 
-def tracking_video_rectangle_tovideo(root, name, ad_name, point, result = 'cool_project.avi', edge = 20, save_img = False, save_result = True, method_num = 5, save_img2 = True):
+def tracking_video_rectangle_tovideo(root, name, ad_name, point, result = 'cool_project.avi', edge = 20, save_img = False, save_result = True, method_num = 5, save_img2 = True, middle_halt = -1):
     # Set up tracker.
     # Instead of MIL, you can also use
     tracker_types = ['BOOSTING', 'MIL','KCF', 'TLD', 'MEDIANFLOW', 'CSRT', 'MOSSE']
@@ -240,7 +240,7 @@ def tracking_video_rectangle_tovideo(root, name, ad_name, point, result = 'cool_
         print('Cannot read video file')
         sys.exit()
     cv2.imwrite("result/%05d.jpg"%(0),frame)
-    out = cv2.VideoWriter(result , cv2.VideoWriter_fourcc(*'DIVX'), 30, (frame.shape[1],frame.shape[0]))
+    out = cv2.VideoWriter(result , cv2.VideoWriter_fourcc(*'DIVX'), 10, (frame.shape[1],frame.shape[0]))
     
     # Define an initial bounding box
     bbox = [(point[_][0] - edge, point[_][1] - edge, edge*2 , edge*2) for _ in range(4)]
@@ -303,6 +303,7 @@ def tracking_video_rectangle_tovideo(root, name, ad_name, point, result = 'cool_
         # Exit if ESC pressed
         k = cv2.waitKey(1) & 0xff
         if k == 27 : break
+        if index_ == middle_halt : break
     out.release()
     return np.array(ans)
 if (__name__=="__main__"):
