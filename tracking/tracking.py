@@ -200,11 +200,11 @@ def tracking_video_rectangle(root, name, ad_name, point, edge = 20, save_img = F
         if k == 27 : break
     return np.array(ans)
 
-def tracking_video_rectangle_tovideo(root, name, ad_name, point, edge = 20, save_img = False, save_result = True):
+def tracking_video_rectangle_tovideo(root, name, ad_name, point, result = 'cool_project.avi', edge = 20, save_img = False, save_result = True, method_num = 5, save_img2 = True):
     # Set up tracker.
     # Instead of MIL, you can also use
     tracker_types = ['BOOSTING', 'MIL','KCF', 'TLD', 'MEDIANFLOW', 'CSRT', 'MOSSE']
-    tracker_type = tracker_types[5]
+    tracker_type = tracker_types[method_num]
     
     ad = cv2.imread(join(root,ad_name))
     
@@ -240,7 +240,7 @@ def tracking_video_rectangle_tovideo(root, name, ad_name, point, edge = 20, save
         print('Cannot read video file')
         sys.exit()
     cv2.imwrite("result/%05d.jpg"%(0),frame)
-    out = cv2.VideoWriter('cool_project.avi',cv2.VideoWriter_fourcc(*'DIVX'), 15, (frame.shape[1],frame.shape[0]))
+    out = cv2.VideoWriter(result , cv2.VideoWriter_fourcc(*'DIVX'), 30, (frame.shape[1],frame.shape[0]))
     
     # Define an initial bounding box
     bbox = [(point[_][0] - edge, point[_][1] - edge, edge*2 , edge*2) for _ in range(4)]
@@ -278,11 +278,11 @@ def tracking_video_rectangle_tovideo(root, name, ad_name, point, edge = 20, save
                 p2 = (int(bbox[0] + bbox[2]), int(bbox[1] + bbox[3]))
                 p3 = (int(bbox[0] + bbox[2]/2), int(bbox[1] + bbox[3]/2))
                 ans.append(p3)
-                if (save_img):
+                if (save_img or save_img2):
                     cv2.rectangle(frame, p1, p2, (255,0,0), 2, 1)
             else :
                 # Tracking failure
-                if (save_img):
+                if (save_img or save_img2):
                     cv2.putText(frame, "Tracking failure detected", (100,80), cv2.FONT_HERSHEY_SIMPLEX, 0.75,(0,0,255),2)
 
             if (save_img):
@@ -294,8 +294,11 @@ def tracking_video_rectangle_tovideo(root, name, ad_name, point, edge = 20, save
 
                 # Display result
                 cv2.imwrite("result/%05d_%d.jpg"%(index_, _) , frame)
+        if (save_img2):
+            cv2.imwrite("result/%05d_.jpg"%(index_), frame)
         if (save_result):
             frame = Trans_forward(frame, np.array(ans , dtype = np.float32), ad)
+            cv2.imwrite("result2/%05d_.jpg"%(index_), frame)
             out.write(frame)
         # Exit if ESC pressed
         k = cv2.waitKey(1) & 0xff
