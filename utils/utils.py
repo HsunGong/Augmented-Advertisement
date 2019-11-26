@@ -25,20 +25,22 @@ Trans_into = cv2.warpPerspective
 
 """
 Usage 
-    clockwise
-    
-    
+    Trans_forward(im, rect, ad)
+    im : Image, np.uint8
+    rect : Rectangle area to put the advertisement in the Image, np.float32
+    ad : Advertisement, np.uint8
+    k : transparency (of ad) 0 to 1. 
 """
-def Trans_forward(im, rect, ad):
+def Trans_forward(im, rect, ad, k=.5):
     w,h,_ = ad.shape
     iw, ih, _ = im.shape
     standart_rect = np.array([[0, 0], [0, w], [h, w], [h, 0]] , dtype = np.float32)
     blank = np.ones(ad.shape, dtype = np.uint8)
     trans = getTrans(standart_rect, rect)
-    blank_tran = np.ones((1,), dtype = np.uint8) - Trans_into(blank, trans, (ih, iw))
+    blank_tran = (np.ones((1,), dtype = np.uint8) - Trans_into(blank, trans, (ih, iw)).astype(np.float16) * np.float16(1-k))
     im = im * blank_tran
-    ad_tran = Trans_into(ad, trans, (ih,iw))
-    return im+ad_tran
+    ad_tran = Trans_into(ad, trans, (ih,iw)) * np.float16(1-k)
+    return np.array(im+ad_tran, dtype = np.uint8)
 
 
 if (__name__ == "__main__"):
