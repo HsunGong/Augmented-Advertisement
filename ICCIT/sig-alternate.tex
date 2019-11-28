@@ -1,0 +1,232 @@
+\documentclass{sig-alternate}
+
+
+\begin{document}
+%
+% --- Author Metadata here ---
+\conferenceinfo{WOODSTOCK}{'97 El Paso, Texas USA}
+
+
+\title{A system of automatic Embedded Advertisement Placement for Videos}
+\numberofauthors{3}
+\author{
+\alignauthor
+Jiasen Li\titlenote{Author}\\
+       \affaddr{Shanghai Jiao Tong University}\\
+       \affaddr{800 Dongchuan Road}\\
+       \affaddr{Shanghai, China}\\
+       \email{lijiasen0921@sjtu.edu.cn}
+\alignauthor
+Xun Gong\titlenote{Author}\\
+       \affaddr{Shanghai Jiao Tong University}\\
+       \affaddr{800 Dongchuan Road}\\
+       \affaddr{Shanghai, China}\\
+       \email{@sjtu.edu.cn}
+\alignauthor
+Boning Li\titlenote{Author}\\
+       \affaddr{Shanghai Jiao Tong University}\\
+       \affaddr{800 Dongchuan Road}\\
+       \affaddr{Shanghai, China}\\
+       \email{@sjtu.edu.cn}
+}
+\maketitle
+
+
+\begin{abstract}
+\label{sec:abstract}
+% Markerless augmented reality can be a challenging computer
+% vision task, especially in live broadcast settings and in the absence of information related to the video capture such as the intrinsic camera
+% parameters. 
+Advertisments(abbr ad) on existing videos or live broadcast is hard to prepare due to the difficulty of preparing instant posters and editing video. 
+Meanwhile youtube's commercial breaks is annoying for us watchers to wait, unable to balance video webs' income and watchers' natural and aesthetic taste. 
+% The aim is to augment the scene such that there is no longer a need for commercial breaks.
+What's more, we may notice that in some videos ads are out of date or inserting ads is not considered during shooting. 
+% This typically requires the assistance of a skilled artist, along
+% with the use of advanced video editing tools in a post-production environment.
+To solve problems above, here, we propose an auto ad placement system that identifies proper areas and overlay them with ads. 
+% We present an automated video augmentation pipeline that identifies textures of interest and overlays an advertisement onto these regions. 
+The main purpose of our system is to replace what editors may do, which are placing an ad with best location that is both aesthetic and natural.
+% We constrain the advertisement to be placed in a way that is aesthetic and natural. 
+Starting from a single picture, we build a changed segmentation tool and 3D reconstruction model to place an ad into this picture. 
+% In order to achieve seamless integration of the advertisement with the original video we build a 3D representation of the scene, place the advertisement in 3D, and then project it back onto the image plane. 
+Then we expand it to a video using tracking methods.
+% After successful placement in a single frame, we use homography-based, shape-preserving tracking such that the advertisement appears perspective correct for the duration of a video clip. The tracker is designed to handle smooth camera motion and shot boundaries.
+Our system is mainly tested under `WALL/BUILDING' scene. But other labels are also accepted within the same system.
+\end{abstract}
+
+\keywords{Virtual Advertisement,Embedded Advertisement Insertion, Overlaying Advertisement, Auto Advertisement}
+
+\section{Introduction}
+\label{sec:intro}
+Advertising nowadays play an important role on sponsoring video photographers to shot good free videos. 
+Meanwhile, video watchers want no interruptioan during the video. That's why advertisement placement(also called as product placement) popular. 
+However, in some cases, we need to add placements to works that did not originally have embedded advertising or update existing placements which may waste a lot of time.
+Our motivation is to automatically find a good area to place the newest  advertisements achieving the goal of balance between sponsors, video photographers and video watchers.
+
+Different approaches have been attempted to place an advertisement into videos.
+Manual solutions require the expertise of a video editor which is expensive and inefficient.
+Automatic solutions have been used to reduce human work via visual attention \cite{} or visual harmony \cite{} to achieve the same goal: beauty.
+Some traditional machine learning methods \cite{5,25} are also used to detect natural regions and overlay relevant advertisements.
+Recently, some neural network methods \cite{} is also perform well under Sports videos.
+
+Placing advertisements in and nearby can compromise the viewing experience for speakers. Then \cite{} propose such a novel system that automatically identifies viable "crowd" regions through sports videos and place advertisements in a natural fashion. 
+Based on it \cite{}, we adapt the pipeline into many other areas and works well. Meanwhile, we change some connections inner the system for better performance.
+
+The rest of paper is organized as follows. Section \ref{sec:rel-work} discusses some relevant works in detail on the topic. Section \ref{sec:model} presents our system in detail. Experimental results and discussions are presented in Section \ref{sec:expr}. And section \ref{sec:future} discusses some other works we may do.
+
+\section{Related Work}
+\label{sec:rel-work}
+
+Various systems and pipelines have been proposed for the insertion of assets in video. Ideally, the asset should integrate seamlessly without occluding any pertinent video content. The asset should be apparent but not disruptive.
+
+% Traditional maching learning system.
+First challenge is to choose which advertisement is good to insert. 
+\cite{26} choose insertion content according to visual consistency and \cite{6} harmonize the asset to be visually consistent with the original content. 
+\cite{21} define intrusiveness to measure this: (a) if the inserted asset covers the Region of Interest (ROI), it is truly very intrusive, and (b) if the asset distracts audience attention from the original attending point, it is also very intrusive.
+
+Second challenge is to obtain physical boundaries of the real world scene for advertisement placement. 
+\cite{30} find areas in a soccer field and make use of strong and reliable field boundary markings.
+\cite{29} use the geometry information of the candidate regions derived from known markers.
+\cite{5} take advantage of color-harmonizing features with the background. They also use a visual attention model to find the most
+“attention-grabbing” region to place the advertisements.
+\cite{paper} use the methods of segmentation to identify which area is best to be put.
+
+The biggest challenge was to achieve the goal of virtual placement in compliance with the conditions of (a) non-intrusiveness, and (b) conformity to real world scene constraints, while requiring minimal manual intervention. 
+Due to the difference between physic and virtual world, video watchers may feel uncomfortable for our virtual advertisements more or less.
+
+Usually, advertisers hire professional editors to manually implement virtual ads. 
+It usually is very labor-intensive and inefficient for rapid productions on monetizing
+sports videos. We approach the problem with the intention of having a fully
+automatic pipeline. The authors in [29] aim to automate the pipeline for sports
+highlights; however, there is an initial manual step of segmenting out the highlights
+in the video. They also model their virtual reality around the boundaries
+of a single game event, so they manually remove the replays from the broadcast
+videos as well. The work done in [24] is similar in attempting to construct a
+system with a fundamental requirement being that the system performs on-line
+in real-time, with no human intervention and no on screen errors. Prior assumption
+that the billboard to be substituted in the target video is known beforehand
+reduces the problem to one of template matching.
+It must be noted that a lot of the work briefly reviewed in this section are
+built around certain very specific use cases (tennis [5,6], soccer [30], baseball
+[19]), relying heavily on the presence of known, reliable markings on the ground
+and a rigid sporting-ground structure enabling assets to be integrated seamlessly
+into the scenery.
+We aim to be independent of such assumptions while focusing on the crowds
+and the surrounding areas at sporting events. Our approach also completely
+removes the manual component from the entire system, presenting an end-toend
+pipeline for the overlay of ads in a non-intrusive, engaging fashion.
+
+In ... they use a pipeline that input a video, will output a video with advertisements as well. They pass a video into a segmentation and then do 3D reconstruction finally place advertisement and tracking it. but they still remain a lot of work to do.
+
+\section{Model}
+\label{sec:model}
+
+In this problem, we establish a system to achieve this target with several parts separated. 
+% Figure of this model
+
+Initially, we propose our model under a single picture. 
+After overlaying advertisements on this picture, we apply this model in a video to track this advertisement's location and  meanwhile automatically detect and correct the location.
+
+\subsection{Best overlayable area}
+
+\subsubsection{Segmentation}
+Firstly, we attempt to isolate an area where we can overlay this with our ad.
+
+Semantic segmentation is a good method to decompose a picture into different parts at pixel level. Famous works are shown in cite ..., and We make use of a PSPNet trained under ADE20K and fine-tune under our own dataset which is targeted to identify label 'Wall' and 'building'.
+
+% We think that a good area to place the advertisement must be of the same type in the segmentation. If the area is not of the same type, It may not be on the same plane. 
+% Then a frame is selected, on which the segmentation is run. 
+% After the segmentation, 
+
+\subsubsection{Plane reconstruction}
+
+Recently, plane reconstruction is a popular topic on CVPR2019, so we try to use this model to help us find the area to be overlaid.
+
+\subsubsection{Measurement of selected area}
+
+Firstly, we use a DFS-likey method to split the seged pic $Seg$, then we get a bounch of pics $seg_1 \cdots seg_m$
+
+% some performance of this
+
+Then, after split $Plane$ into single pics $plane_1 \cdots plane_n$ we intersect $PLANE$ and $SEG$ to get nearly $m \times n$ pictures which are candidates for areas.
+
+% some performance of this
+
+We propose a score strategy to measure these areas and chose the highest one as our choice.
+
+\textbf{score strategy} Based on \cite{xxx}, we define our score function as 
+$$S = S_c * S_l * S_p $$
+
+where 
+$S_c$ is score to measure components.
+$S_l$ is score to measure completeness.
+$S_p$ is score to measure shape.
+
+% some example of these scores. and explainations
+
+
+
+\subsection{Advertisements location in coordinate system}
+
+\subsubsection{Depth}
+Depth is another good method to decompose a picture into different parts at pixel level. Famous works are shown in cite ..., and We make use of a ??? trained under ??? and fine-tune under our own dataset which is targeted to get a large-scaled depth. 
+% Li jia sen
+
+\subsubsection{3D Reconstruction}
+% Li bo ning
+
+
+
+\subsubsection{Placement}
+After the 3d reconstruction, four pixels of the origin image is selected as the vertices of the advertisement to be put on the 
+% Li jia sen
+
+\subsection{From picture to video}
+
+We found a more reasonable application under videos. Based on \cite{}, we select some import frames from one video, and then apply our method above to choose an important one used as import frame to place ad.
+
+\subsubsection{Capture Video}
+%The picture we capture are from a monocular RGB camera, which is widely used and by which most videos on the websites are taking. 
+The video we capture are from a monocular RGB video camera, of which the camera parameters and the depth are unknown. This form of video can be widely found in the world wide web. 
+
+Note that (1) intrinsic parameters about the camera are not known. (2) The shot scene can be changed which means long-shoting scene is good but not necessary (i.e. multiple shots are accepted in our system).
+
+\subsubsection{Tracking}
+
+After selecting the four points of the Ads to place in the selected frame, we generate a bounding box for each point of four points in the selected frame. For each bounding box, at the selected frame, the point we want to track is on the center of the bounding box. 
+
+% graph
+
+Our system can use 7 different tracking methods and track the four bounding boxes. 
+We believe that the point we want to track is on the center of the bounding box at every frame. 
+We select different sizes of the bounding box. The large bounding boxes have higher stability, when the small bounding boxes have higher accuracy. 
+
+
+
+\textbf{Robustness for scene change} Currently, we assert to choose at least 1 frame to re-place with ad. in 5 seconds. 
+And, when the tracker is lost, it send the message to the frame selecter. 
+% Future work ... for anti-scene change
+
+
+\section{Experiment}
+\label{sec:expr}
+
+\subsection{}
+
+\section{Results}
+\label{sec:result}
+\section{Conclusion and future work}
+\label{sec:future}
+
+% Loss， 大箭头
+
+\bibliographystyle{abbrv}
+\bibliography{sigproc}  % sigproc.bib is the name of the Bibliography in this case
+
+
+\newpage    
+\section{Authors' Background}
+
+Hahsha
+
+\end{document}
