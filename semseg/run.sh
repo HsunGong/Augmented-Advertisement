@@ -14,8 +14,9 @@ exp_dir=exp/${model}
 
 test=false
 
+img=../demo/4.png
 # no change
-result_dir=$exp_dir/results
+result_dir=../demo
 model_dir=$exp_dir/models
 
 set -e
@@ -58,9 +59,9 @@ fi
 if [[ $stage -le 2 && $end_stage -ge 2 ]] || [ $test = true ]; then
     echo -e "${GREEN}Test File${BLANK}"
     python3 -u scripts/test.py --cfg $config \
-        --imgs ../demo/4.png \
+        --imgs $img \
         TEST.checkpoint epoch_20.pth \
-        TEST.result ../demo \
+        TEST.result $result_dir \
         ${args[@]}
 fi
 

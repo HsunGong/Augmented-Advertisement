@@ -92,7 +92,7 @@ def predict(_run, _log):
         predict_segmentation = segmentation.cpu().numpy().argmax(axis=1)
 
         # mask out non planar region
-        predict_segmentation[prob.cpu().numpy().reshape(-1) <= 0.1] = 20
+        predict_segmentation[prob.cpu().numpy().reshape(-1) <= 0.1] = 20 # NOTE: check point
         predict_segmentation = predict_segmentation.reshape(h, w)
 
         # visualization and evaluation
@@ -111,6 +111,9 @@ def predict(_run, _log):
         pred_seg = cv2.resize(np.stack([colors[predict_segmentation, 0],
                                         colors[predict_segmentation, 1],
                                         colors[predict_segmentation, 2]], axis=2), (w, h))
+        # 3 color cover ...
+        print(predict_segmentation.shape, colors.shape, pred_seg.shape)
+        cv2.imwrite(os.path.dirname(cfg.image_path) + '/tmp.png', cv2.resize(colors[predict_segmentation, 1], (w,h)))
 
         # blend image
         blend_pred = (pred_seg * 0.7 + image * 0.3).astype(np.uint8)
