@@ -67,7 +67,7 @@ class InferenceDataset(Dataset):
             pass
 
         image = cv2.resize(image, (640, 480), interpolation=cv2.INTER_LINEAR)
-        camera[[0, 2, 4]] *= 640.0 / camera[4]        
+        camera[[0, 2, 4]] *= 640.0 / camera[4]
         camera[[1, 3, 5]] *= 480.0 / camera[5]
 
         ## The below codes just fill in dummy values for all other data entries which are not used for inference. You can ignore everything except some preprocessing operations on "image".

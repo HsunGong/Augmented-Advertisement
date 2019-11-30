@@ -41,14 +41,25 @@ def visualize_result(data, pred, cfg):
         if ratio > 0.1:
             print("  {}: {:.2f}%".format(name, ratio))
 
+    dirname = os.path.join(cfg.TEST.result, 'sem_seg')
+    if not os.path.exists(dirname):
+        os.mkdir(dirname)
+    for i in range(np.min(pred), np.max(pred) + 1):
+        predd = np.equal(pred, i)
+        if not np.any(predd):
+            continue
+        # np.save(dirname + f'{i}.npy', predd)
+        Image.fromarray(predd.astype(np.uint8)*255).save(dirname + f'/{i}.png')
+    
     # colorize prediction
     pred_color = colorEncode(pred, colors).astype(np.uint8)
-
+    
     # aggregate images and save
     im_vis = np.concatenate((img, pred_color), axis=1)
 
     # img_name = 'seg_' + info.split('/')[-1]
     img_name = "sem_seg.png"
+    np.save(os.path.join(cfg.TEST.result,'masks.npy'), pred) # save numpy
     Image.fromarray(pred_color).save(
         os.path.join(cfg.TEST.result, img_name))
 

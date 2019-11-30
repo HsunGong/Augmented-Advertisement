@@ -29,3 +29,5 @@ pretrained/
 *.bak
 *tmp*
 *bak/
+
+*.avi

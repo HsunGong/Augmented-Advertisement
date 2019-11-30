@@ -479,6 +479,7 @@ def evaluate(options):
         camera[5] = 480
         dataset = InferenceDataset(options, config, image_list=image_list, camera=camera)
     elif 'inference' in options.dataset:
+        hh, ww, _ = cv2.imread(options.customDataFolder + '/img.png').shape
         image_list = glob.glob(options.customDataFolder + '/*.png') + glob.glob(options.customDataFolder + '/*.jpg')
         if os.path.exists(options.customDataFolder + '/camera.txt'):
             camera = np.zeros(6)
@@ -544,7 +545,7 @@ def evaluate(options):
 
     if not options.debug:
         for method_name in [detector[0] for detector in detectors]:
-            os.system('rm ' + options.test_dir + '/*_' + method_name + '.png')
+            os.system('rm -f' + options.test_dir + '/*_' + method_name + '.png')
             continue
         pass
 
@@ -587,8 +588,19 @@ def evaluate(options):
                     continue
             else:
                 for c in range(len(detection_pair)):
-                    np.save(options.test_dir + '/' + str(sampleIndex % 500) + '_plane_parameters_' + str(c) + '.npy', detection_pair[c]['detection'][:, 6:9])
-                    np.save(options.test_dir + '/' + str(sampleIndex % 500) + '_plane_masks_' + str(c) + '.npy', detection_pair[c]['masks'][:, 80:560])
+                    # np.save(options.test_dir + '/' + str(sampleIndex % 500) + '_plane_parameters_' + str(c) + '.npy', detection_pair[c]['detection'][:, 6:9])
+                    # np.save(options.test_dir + '/' + str(sampleIndex % 500) + '_plane_masks_' + str(c) + '.npy', detection_pair[c]['masks'][:, 80:560])
+                    np.save(options.test_dir + '/plane_parameters.npy', detection_pair[c]['detection'][:, 6:9])
+                    mask =  detection_pair[c]['masks'][:, 80:560].cpu().numpy().astype(np.uint8)
+                    bak = np.ones(mask.shape[1:])
+                    new_mask = np.zeros(mask.shape[1:])
+                    for m in range(mask.shape[0]):
+                        # print(np.where())
+                        # print(mask[m,:,:].shape, bak.shape, bak[mask[m,:,:]].shape, m)
+                        new_mask = new_mask + (m+1) * mask[m,:,:]
+                    new_mask = cv2.resize(new_mask, (ww, hh), interpolation=cv2.INTER_LINEAR)
+                    np.save(options.test_dir + '/plane_masks.npy', new_mask)
+                    # cv2.imwrite(options.test_dir + '/tmp.png', new_mask*20)
                     continue
                 pass
                             
