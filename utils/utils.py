@@ -43,7 +43,7 @@ def Trans_forward(im, rect, ad, k=.2):
     ad_tran = Trans_into((ad * (1-k)).astype(np.uint8), trans, (ih,iw))
     return np.array(im+ad_tran, dtype = np.uint8)
 
-def gen_k_mat(im_shape, k = 2):
+def get_k_mat(im_shape, k = 12, m = 10):
     w, h, _ = im_shape
     a = np.arange(w*h, dtype = np.int64).reshape((w,h))
     uv = np.zeros((w,h,2), dtype = np.float32)
@@ -58,7 +58,7 @@ def gen_k_mat(im_shape, k = 2):
     #dist = np.sqrt(dist)
     #dist = dist / math.sqrt(w*h) 
     dist = dist / np.max(dist) * k
-    k = 1/(np.exp(-dist)+1) .reshape((w,h,1))*2-1
+    k = np.maximum(1/(np.exp(-dist)+1) .reshape((w,h,1))*m-(m-1),0)
     
     return k
     
@@ -71,7 +71,7 @@ if (__name__ == "__main__"):
     b = np.array([[h/10,w/10],[0,w/3],[h/2,w/2],[h/3,0]], dtype = np.float32)
     # m = getTrans(a,b)
     #r = Trans_forward(im,b,ad, k = np.ones(ad.shape)*.1)
-    r = Trans_forward(im,b,ad, k = gen_k_mat(ad.shape))
+    r = Trans_forward(im,b,ad, k = get_k_mat(ad.shape))
 
     cv2.imwrite(r'saved.jpg',r)
 
