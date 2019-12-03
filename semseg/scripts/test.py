@@ -121,8 +121,11 @@ def main(cfg, gpu):
     crit = nn.NLLLoss(ignore_index=-1)
 
     segmentation_module = SegmentationModule(net_encoder, net_decoder, crit)
+    segmentation_module.cuda()
 
     # Dataset and Loader
+    import time
+    t = time.clock()
     dataset_test = TestDataset(
         cfg.list_test,
         cfg.DATASET)
@@ -133,12 +136,9 @@ def main(cfg, gpu):
         collate_fn=user_scattered_collate,
         num_workers=5,
         drop_last=True)
-
-    segmentation_module.cuda()
-
     # Main loop
     test(segmentation_module, loader_test, gpu)
-
+    print(time.clock() - t)
     print('Inference done!')
 
 

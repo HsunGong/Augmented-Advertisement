@@ -354,7 +354,8 @@ class TraditionalDetector():
 def evaluate(options):
     config = InferenceConfig(options)
     config.FITTING_TYPE = options.numAnchorPlanes
-
+    import time
+    t = time.clock()
     if options.dataset == '':
         dataset = PlaneDataset(options, config, split='test', random=False, load_semantics=False)
     elif options.dataset == 'occlusion':
@@ -625,6 +626,7 @@ def evaluate(options):
             np.save('logs/all_statistics.npy', all_statistics)
             pass
         pass
+    print(time.clock() - t)
     return
 
 if __name__ == '__main__':
