@@ -72,34 +72,9 @@ if (__name__ == "__main__"):
     # a = np.array([[0,0],[0,w-1],[h-1,0],[h-1,w-1]], dtype = np.float32)
     bs = np.loadtxt(img_dir + '/process.txt').astype(np.float32) # 
     # m = getTrans(a,b)
-    os.system('mkdir -p ' + img_dir + '/aug')
+    #os.system('mkdir -p ' + img_dir + '/aug')
     for row in range(bs.shape[0]):
-        dots = bs[row,:].reshape(4,2)
-        # print(im.shape)
-        dots[:,:] = dots[[2,3,1,0], :]
-        dots[:,:] = dots[:,[0,1]]
-        # dots[:,0] = dots[:,0] * 3.75
-        # dots[:,1] = dots[:,1] * 2.8125
-        # print(row, dots.shape)
-        r = Trans_forward(im,dots,ad) ### Anti position x-y of image
-
+        xld,yld,xlu,ylu,xrd,yrd,xru,yru=bs[row,:]
+        b = np.array([[yru,xru],[yrd,xrd],[yld,xld],[ylu,xlu]], dtype = np.float32)
+        r = Trans_forward(im,b,ad,k=get_k_mat(ad.shape))
         cv2.imwrite(img_dir + f'/aug/{row}.png', r)
-
-
-
-    '''
-    im = cv2.imread(r'img.jpg')
-    w,h,c = im.shape
-    a = np.array([[0,0],[0,w-1],[h-1,0],[h-1,w-1]], dtype = np.float32)
-    b = np.array([[0,0],[0,500],[1000,0],[1000,1000]], dtype = np.float32)
-    m = getTrans(a,b)
-    r = Trans_into(im,m,(1000,1000))
-
-    cv2.imwrite(r'saved.jpg',r)
-    '''
-
-
-    """
-    im = np.ones((5,5),np.float32)
-
-    """

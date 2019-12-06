@@ -172,7 +172,7 @@ if __name__ == '__main__':
         "opts",
         help="Modify config options using the command-line",
         default=None,
-        nargs=argparse.REMAINDER,
+        nargs=argparse.REMAINDER,   
     )
     args = parser.parse_args()
     print(args.imgs)

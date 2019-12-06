@@ -341,6 +341,7 @@ int main(int argc, char* argv[]){
 	std::cout << img_dir << '\n';
 	freopen((img_dir + "/out.txt").c_str(),"r",stdin);
 	scanf("%d%d",&n,&m);
+	printf("--%d %d\n",n,m);
 	for(int i=1;i<=n;i++)
 		for(int j=1;j<=m;j++){
 			scanf("%d",&flag1[i][j]);
@@ -355,6 +356,7 @@ int main(int argc, char* argv[]){
 				mx2=max(flag2[i][j],mx2);
 			}
 		}
+    printf("--%d %d\n",mx1,mx2);
 	/*for(int i=1;i<=n/100;i++)
 		for(int j=1;j<=m/100;j++){
 			printf("(%d,%d)%c",flag1[i*100][j*100],flag2[i*100][j*100],j==m/100?'\n':' ');
