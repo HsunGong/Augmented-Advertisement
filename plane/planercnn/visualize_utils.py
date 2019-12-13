@@ -241,7 +241,8 @@ def visualizeBatchDetection(options, config, input_dict, detection_dict, indexOf
         
     if 'depth' in detection_dict:    
         depth_pred = detection_dict['depth'][0].detach().cpu().numpy()
-        cv2.imwrite(options.test_dir + '/depth_final.png', drawDepthImage(depth_pred[80:560]))                    
+        cv2.imwrite(options.test_dir + '/depth_final.png', drawDepthImage(depth_pred[80:560]))   
+        np.save(options.test_dir + '/depth_final.npy', depth_pred[80:560])                 
         if options.debug:
             valid_mask = (depth_gt > 1e-4) * (input_dict['segmentation'].detach().cpu().numpy()[0] >= 0) * (detection_dict['mask'].detach().cpu().numpy().squeeze() > 0.5)
             pass

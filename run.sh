@@ -14,10 +14,10 @@ placement=false
 # dep=true
 # plane2=true
 # intersect=true
-# placement=true
+placement=true
 insert=true
 
-for i in 1; do
+for i in 2; do
     img_dir=$(pwd)/demo/split/$i
     if [ $seg = true ]; then
         cd semseg # has subfolder as sem_seg
@@ -41,6 +41,7 @@ for i in 1; do
         rm -rf tmp && mkdir tmp
         cp $img_dir/img.png $(pwd)/tmp/img.png
         python prepare.py tmp/img.png tmp/img.txt
+        echo "Start Plane RCNN"
         python evaluate.py --methods=f --suffix=warping_refine --dataset=inference \
             --customDataFolder=tmp --test_dir=tmp
         mv tmp $img_dir/rcnn

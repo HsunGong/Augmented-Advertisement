@@ -49,8 +49,8 @@ if (__name__ == "__main__"):
     #    for j in range(0,h):
     #        depthh[i,j,0]=1.0/depthh[i,j,0]
     #depth=1.0/depthh
-    mask1=np.load(img_dir + '/masks.npy')
-    mask2=np.load(img_dir + '/rcnn/plane_masks.npy')
+    mask1=np.load(img_dir + '/masks.npy').astype(int)
+    mask2=np.load(img_dir + '/rcnn/plane_masks.npy').astype(int)
     mask1 = cv2.resize(mask1,(mask2.shape[1], mask2.shape[0]))
     print(mask1.shape, mask2.shape)
     #mask=cv2.imread(r'0.png')

@@ -507,7 +507,7 @@ int main(int argc, char* argv[]){
 		ANS.PB(make_tuple(maxv,best_xld,best_yld,best_xlu,best_ylu,best_xrd,best_yrd,best_xru,best_yru));
 	}
 	sort(ANS.begin(),ANS.end());
-	freopen("process.txt","w",stdout);
+	freopen((img_dir + "/process.txt").c_str(),"w",stdout);
 	for(int i=0;i<min(10,(int)ANS.size());i++){
 		tuple<int,int,int,int,int,int,int,int,int>o=ANS[(int)ANS.size()-i-1];
 		printf("%d %d %d %d %d %d %d %d\n",get<1>(o),get<2>(o),get<3>(o),get<4>(o),get<5>(o),get<6>(o),get<7>(o),get<8>(o));

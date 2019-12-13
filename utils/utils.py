@@ -72,7 +72,7 @@ if (__name__ == "__main__"):
     # a = np.array([[0,0],[0,w-1],[h-1,0],[h-1,w-1]], dtype = np.float32)
     bs = np.loadtxt(img_dir + '/process.txt').astype(np.float32) # 
     # m = getTrans(a,b)
-    #os.system('mkdir -p ' + img_dir + '/aug')
+    os.system('mkdir -p ' + img_dir + '/aug')
     for row in range(bs.shape[0]):
         xld,yld,xlu,ylu,xrd,yrd,xru,yru=bs[row,:]
         b = np.array([[yru,xru],[yrd,xrd],[yld,xld],[ylu,xlu]], dtype = np.float32)
