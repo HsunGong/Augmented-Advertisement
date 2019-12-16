@@ -27,12 +27,15 @@ Trans_into = cv2.warpPerspective
 """
 Usage 
     Trans_forward(im, rect, ad)
-    im : Image, np.uint8 # LU, LD, RD, RU (left,right, up, down)
+    im : Image, np.uint8
     rect : Rectangle area to put the advertisement in the Image, np.float32
     ad : Advertisement, np.uint8
     k : transparency (of ad) 0 to 1. 
 """
 def Trans_forward(im, rect, ad, k=.2):
+    # im = im.astype(np.uint8)
+    # ad = ad.astype(np.uint8)
+    rect = np.array(rect,np.float32)
     w,h,_ = ad.shape
     iw, ih, _ = im.shape
     standart_rect = np.array([[0, 0], [0, w], [h, w], [h, 0]] , dtype = np.float32)
@@ -43,7 +46,7 @@ def Trans_forward(im, rect, ad, k=.2):
     ad_tran = Trans_into((ad * (1-k)).astype(np.uint8), trans, (ih,iw))
     return np.array(im+ad_tran, dtype = np.uint8)
 
-def get_k_mat(im_shape, k = 1.5, m = 3):
+def get_k_mat(im_shape, k = 12, m = 10):
     w, h, _ = im_shape
     a = np.arange(w*h, dtype = np.int64).reshape((w,h))
     uv = np.zeros((w,h,2), dtype = np.float32)
@@ -61,6 +64,7 @@ def get_k_mat(im_shape, k = 1.5, m = 3):
     k = np.maximum(1/(np.exp(-dist)+1) .reshape((w,h,1))*m-(m-1),0)
     
     return k
+    
 
 if (__name__ == "__main__"):
     import sys,os
@@ -69,12 +73,18 @@ if (__name__ == "__main__"):
     im = cv2.imread(img_dir + '/img.png').astype(np.uint8)
     ad = cv2.imread(img_dir + '/ad.png').astype(np.uint8)
     w,h,c = im.shape
-    # a = np.array([[0,0],[0,w-1],[h-1,0],[h-1,w-1]], dtype = np.float32)
-    bs = np.loadtxt(img_dir + '/process.txt').astype(np.float32) # 
+
+    # bs = np.loadtxt(img_dir + '/process.txt').astype(np.float32) # 
+    # os.system('mkdir -p ' + img_dir + '/aug')
+    # for row in range(bs.shape[0]):
+    #     xld,yld,xlu,ylu,xrd,yrd,xru,yru=bs[row,:]
+    #     b = np.array([[yru,xru],[yrd,xrd],[yld,xld],[ylu,xlu]], dtype = np.float32)
+    #     r = Trans_forward(im,b,ad,k=get_k_mat(ad.shape))
+    #     cv2.imwrite(img_dir + f'/aug/{row}.png', r)
+
+    bs = np.array([1016, 141, 979, 468, 343, 115, 338, 456]).astype(np.float32) # 
     # m = getTrans(a,b)
-    os.system('mkdir -p ' + img_dir + '/aug')
-    for row in range(bs.shape[0]):
-        xld,yld,xlu,ylu,xrd,yrd,xru,yru=bs[row,:]
-        b = np.array([[yru,xru],[yrd,xrd],[yld,xld],[ylu,xlu]], dtype = np.float32)
-        r = Trans_forward(im,b,ad,k=get_k_mat(ad.shape))
-        cv2.imwrite(img_dir + f'/aug/{row}.png', r)
+    xld,yld,xlu,ylu,xrd,yrd,xru,yru=bs
+    b = np.array([[yru,xru],[yrd,xrd],[yld,xld],[ylu,xlu]], dtype = np.float32)
+    r = Trans_forward(im,b,ad)
+    cv2.imwrite('tmp.png', r)
