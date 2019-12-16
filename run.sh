@@ -10,12 +10,12 @@ track=false
 insert=false
 placement=false
 
-# seg=true
-# dep=true
-# plane2=true
-# intersect=true
+seg=true
+dep=true
+plane2=true
+intersect=true
 # placement=true
-insert=true
+# insert=true
 
 img_dir=$(pwd)/demo/img
 if [ $seg = true ]; then
@@ -46,6 +46,7 @@ if [ $plane2 = true ]; then
     mv tmp $img_dir/rcnn
     cd ../..
 fi
+
 if [ $intersect = true ]; then
     rm -rf $img_dir/intersect
     mkdir -p $img_dir/intersect

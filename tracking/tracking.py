@@ -101,14 +101,14 @@ def tracking_video(root, name, point, edge = 20, save_img = True):
         if k == 27 : break
     return np.array(ans)
 
-def tracking_video_standard(video, point, edge = 20, save_img = False):
+def tracking_video_standard(video, point, edge = 20, save_img = False, id=5):
     # Set up tracker.
     # video = ReadVideo("1.mp4")
     assert(isinstance(video, ReadVideo))
     
     # Instead of MIL, you can also use
     tracker_types = ['BOOSTING', 'MIL','KCF', 'TLD', 'MEDIANFLOW', 'CSRT', 'MOSSE']
-    tracker_type = tracker_types[5]
+    tracker_type = tracker_types[id]
 
     if int(minor_ver) >= 3:
         tracker = cv2.Tracker_create(tracker_type)
@@ -198,13 +198,13 @@ def tracking_video_standard(video, point, edge = 20, save_img = False):
         if k == 27 : break
     return np.array(ans)
 
-def sup_tracking_video_standard(video, points, edge = 20, save_img = False, position = 0):
+def sup_tracking_video_standard(video, points, edge = 20, save_img = False, position = 0, id=5):
     ans = []
     # video = ReadVideo("")
     length = 100000000
     for i in range(points.shape[0]):
         video.get_part_video(position)
-        ans.append(tracking_video_standard(video, points[i],edge , save_img))
+        ans.append(tracking_video_standard(video, points[i],edge , save_img, id))
         length = min(length, ans[i].shape[0])
         # print(ans)
     for i in range(points.shape[0]):

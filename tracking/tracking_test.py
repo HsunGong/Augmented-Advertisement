@@ -14,19 +14,22 @@ import numpy as np
 
 # a = tracking_video_rectangle_tovideo("video/","1.mp4", "1.png", [[273,352],[266,616],[412,620],[416,369]], result = 'result__.avi', method_num = 5, edge = 4, middle_halt = 250)
 points = np.array([1016, 141, 979, 468, 343, 115, 338, 456]).reshape((4,2))
-points = np.array([1016, 141, 979, 468, 343, 115, 338, 456]).reshape((4,2))
-pointx = points[:,0]
-pointy = points[:,1]
+pointx = np.array(points[:,0])
+pointy = np.array(points[:,1])
 points[:,0] = pointy
 points[:,1] = pointx
 # points = np.array([[273,352],[266,616],[412,620],[416,369]])
-
+import sys
+method = 4 if len(sys.argv) <=1 else int(sys.argv[1]) # 4 is choosen
+edge = 20 if len(sys.argv) <=2 else int(sys.argv[2])
 # li = []
 # for i in range(points.shape[0]):
     # li.append(tracking_video_standard(ReadVideo("video/part_video.mp4"),points[i]))
-ans = sup_tracking_video_standard(ReadVideo("demo/video/main.mp4"),points,save_img=True)
+ans = sup_tracking_video_standard(ReadVideo("demo/video/main.mp4"),points,save_img=True, id=method, edge=edge)
+ans = np.asarray(ans)
+ans[:,:,[0,1]] = ans[:,:,[1,0]]
 np.save(f"tmp{points[0,0]}.npy",ans)
-ans = np.load(f"tmp{points[0,0]}.npy", allow_pickle=True)
+# ans = np.load(f"tmp{points[0,0]}.npy", allow_pickle=True)
 
 video_in = ReadVideo("demo/video/main.mp4")
 adver_video = ReadVideo("demo/video/ad3.mp4")
