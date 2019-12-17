@@ -74,17 +74,17 @@ if (__name__ == "__main__"):
     ad = cv2.imread(img_dir + '/ad.png').astype(np.uint8)
     w,h,c = im.shape
 
-    # bs = np.loadtxt(img_dir + '/process.txt').astype(np.float32) # 
-    # os.system('mkdir -p ' + img_dir + '/aug')
-    # for row in range(bs.shape[0]):
-    #     xld,yld,xlu,ylu,xrd,yrd,xru,yru=bs[row,:]
-    #     b = np.array([[yru,xru],[yrd,xrd],[yld,xld],[ylu,xlu]], dtype = np.float32)
-    #     r = Trans_forward(im,b,ad,k=get_k_mat(ad.shape))
-    #     cv2.imwrite(img_dir + f'/aug/{row}.png', r)
+    bs = np.loadtxt(img_dir + '/process.txt').astype(np.float32) # 
+    os.system('mkdir -p ' + img_dir + '/aug')
+    for row in range(bs.shape[0]):
+        xld,yld,xlu,ylu,xrd,yrd,xru,yru=bs[row,:]
+        b = np.array([[yru,xru],[yrd,xrd],[yld,xld],[ylu,xlu]], dtype = np.float32)
+        r = Trans_forward(im,b,ad)
+        cv2.imwrite(img_dir + f'/aug/{row}.png', r)
 
-    bs = np.array([1016, 141, 979, 468, 343, 115, 338, 456]).astype(np.float32) # 
-    # m = getTrans(a,b)
-    xld,yld,xlu,ylu,xrd,yrd,xru,yru=bs
-    b = np.array([[yru,xru],[yrd,xrd],[yld,xld],[ylu,xlu]], dtype = np.float32)
-    r = Trans_forward(im,b,ad)
-    cv2.imwrite('tmp.png', r)
+    # bs = np.array([1016, 141, 979, 468, 343, 115, 338, 456]).astype(np.float32) # 
+    # # m = getTrans(a,b)
+    # xld,yld,xlu,ylu,xrd,yrd,xru,yru=bs
+    # b = np.array([[yru,xru],[yrd,xrd],[yld,xld],[ylu,xlu]], dtype = np.float32)
+    # r = Trans_forward(im,b,ad)
+    # cv2.imwrite('tmp.png', r)

@@ -10,12 +10,15 @@ track=false
 insert=false
 placement=false
 
-seg=true
-dep=true
-plane2=true
-intersect=true
-# placement=true
-# insert=true
+# seg=true
+# dep=true
+# plane2=true
+placement=true
+insert=true
+# track=true
+
+# intersect=true
+# python utils/frame.py
 
 img_dir=$(pwd)/demo/img
 if [ $seg = true ]; then
@@ -29,11 +32,13 @@ if [ $dep = true ]; then
     python demo.py --demo $img_dir/img.png
     cd ..
 fi
+
 if [ $plane1 = true ]; then
     cd plane/PlanarReconstruction
     python predict.py with resume_dir=checkpoint/pretrained.pt image_path=$img_dir/img.png
     cd ../..
 fi
+
 if [ $plane2 = true ]; then
     rm -rf $img_dir/rcnn # has sub folder as sem_seg
     cd plane/planercnn
@@ -60,4 +65,9 @@ fi
 
 if [ $insert = true ]; then
     python utils/utils.py $img_dir
+fi
+
+if [ $track = true ]; then
+PYTHONPATH=''
+python tracking/tracking_test.py
 fi

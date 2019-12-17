@@ -24,8 +24,8 @@ class WriteVideo:
         self.video = cv2.VideoWriter(name,cv2.VideoWriter_fourcc(*"DIVX"),fps,(self.width,self.height))
 
     def write_frame(self, frame):
-        print(frame.shape)
-        print(self.width,self.height)
+        # print(frame.shape)
+        # print(self.width,self.height)
         # assert(frame.shape[0]==self.width and frame.shape[1]==self.height)
         self.video.write(frame)
     
