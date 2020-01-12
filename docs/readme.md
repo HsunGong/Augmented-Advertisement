@@ -18,9 +18,9 @@ The number of online videos is increasing rapidly with the prosperity of adverti
 
 Use this pipeline, one can embed a rectangle-like advertisement in a video without any difficulty.
 
-- Code is available on `Github`: https://github.com/HsunGong/Augmented-Advertisement
+- Code is available on `Github`: [https://github.com/HsunGong/Augmented-Advertisement](https://github.com/HsunGong/Augmented-Advertisement)
 
-- Paper is available on `Readme.md`: https://github.com/HsunGong/Augmented-Advertisement/blob/master/README.md
+- Paper is available on `Readme.md`: [https://github.com/HsunGong/Augmented-Advertisement/blob/master/README.md](https://github.com/HsunGong/Augmented-Advertisement/blob/master/README.md)
 
 - Demo Video:
     - A `demo` can be seen [here](https://www.youtube.com/watch?v=6h5ptSp3lbY) at youtube.com.
@@ -29,5 +29,5 @@ Use this pipeline, one can embed a rectangle-like advertisement in a video witho
 
 ## License
 
-Our Paper is licensed under the MIT license (https://opensource.org/licenses/MIT).
+Our Paper is licensed under the MIT license [https://opensource.org/licenses/MIT](https://opensource.org/licenses/MIT).
 
