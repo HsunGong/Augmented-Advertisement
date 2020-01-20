@@ -30,8 +30,9 @@ Use this pipeline, one can embed a rectangle-like advertisement in a video witho
 
 - Paper is available on `Readme.md`: [https://github.com/HsunGong/Augmented-Advertisement/blob/master/README.md](https://github.com/HsunGong/Augmented-Advertisement/blob/master/README.md)
 
-- Demo Video:
-    - A `demo` can be seen [here](https://www.youtube.com/watch?v=6h5ptSp3lbY) at youtube.com.
+- Video Link:
+   <!-- - `Demo` is available [here](https://www.youtube.com/watch?v=6h5ptSp3lbY) at youtube.com. -->
+    - `Tutorial` is available [here](https://www.youtube.com/playlist?list=PLcleohtP1n1Pujtad0cFID9vqCIYX0edf) at the second place.
 
 <a href="https://youtu.be/6h5ptSp3lbY"><img src='maxresdefault.jpg' alt="Xun Gong" /></a>
 
