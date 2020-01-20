@@ -32,9 +32,9 @@ Use this pipeline, one can embed a rectangle-like advertisement in a video witho
 
 - Video Link:
    <!-- - `Demo` is available [here](https://www.youtube.com/watch?v=6h5ptSp3lbY) at youtube.com. -->
-    - `Tutorial` is available [here](https://www.youtube.com/playlist?list=PLcleohtP1n1Pujtad0cFID9vqCIYX0edf) at the second place.
+    - `Tutorial` is available [here](https://www.youtube.com/watch?v=RagE-eV5iO8&list=PLcleohtP1n1Pujtad0cFID9vqCIYX0edf&index=3&t=0s) at the second place.
 
-<a href="https://youtu.be/6h5ptSp3lbY"><img src='maxresdefault.jpg' alt="Xun Gong" /></a>
+<a href="https://www.youtube.com/watch?v=RagE-eV5iO8&list=PLcleohtP1n1Pujtad0cFID9vqCIYX0edf&index=3&t=0s"><img src='maxresdefault.jpg' alt="Xun Gong" /></a>
 
 ## License
 
