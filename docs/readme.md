@@ -18,7 +18,7 @@ The number of online videos is increasing rapidly with the prosperity of adverti
 ## Author
 
 <center class="half">
-<img src='gongxun.jfif' width="200" alt="Xun Gong" /> <img src='lijiasen.jfif' width="200" alt="Xun Gong" />  <img src='liboning.jfif' width="200" alt="Xun Gong" />
+<img src='gongxun.jfif' width="200" alt="Xun Gong" /> <img src='lijiasen.jfif' width="200" alt="Xun Gong" /> <img src='liboning.jfif' width="200" alt="Xun Gong" />
 </center>
 
 
