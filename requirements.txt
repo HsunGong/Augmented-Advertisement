@@ -4,7 +4,7 @@ tensorflow==1.14.0
 numpy==1.15.4
 scikit-image==0.14.1
 cffi==1.11.5
-opencv-python==3.4.4.19
+opencv-python==3.4.7.28
 tqdm==4.28.1
 scipy
 imageio
